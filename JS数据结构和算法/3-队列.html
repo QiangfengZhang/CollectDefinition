@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>队列</title>
+</head>
+<body>
+	
+</body>
+<script>
+
+// 队列是一种列表，只能在队尾插入元素，在队首删除元素。
+// 队列用于存储按顺序排列的数据，先进先出。
+
+// 构造函数 Queue 类
+function Queue() {
+	// dataStore 空数组存储队列中所有的元素
+	this.dataStore = [];
+}
+
+// 原型扩展方法
+Queue.prototype = {
+
+	// 向队尾中添加一个元素
+	enqueue: function(element) {
+		this.dataStore.push(element);
+	},
+
+	// 删除队首的元素
+	dequeue: function() {
+		return this.dataStore.shift();
+	},
+
+	// 读取队首的元素
+	front: function() {
+		return this.dataStore[0];
+	},
+
+	// 读取队尾的元素
+	back: function() {
+		return this.dataStore[this.dataStore.length - 1];
+	},
+
+	// 显示队列中的所有元素
+	toString: function() {
+		var retStr = "";
+		for(var i = 0, len = this.dataStore.length; i < len; i++) {
+			retStr += this.dataStore[i] + "\n";
+		}
+		return retStr;
+	},
+
+	// 判断队列是否为空
+	empty: function() {
+		if(this.dataStore.length == 0) {
+			return true;
+		}
+		return false;
+	},
+
+	/**
+	 * 根据十位或者各位上的数值，将数字分配到相应队列的函数
+	 * @param  nums   由 0 ~ 99 之间的数字组成的无序数组
+	 * @param  queues 保存队列的数组
+	 * @param  n      nums 中数字的个数
+	 * @param  digit  digit = 1 表示按照个位来分配
+	 * @param  digit  digit = 10 表示按照十位来分配
+	 */
+	distribute: function(nums, queues, n, digit) {
+		for(var i = 0; i < n; i++) {
+			if(digit == 1) {
+				queues[nums[i] % 10].enqueue(nums[i]);
+			}else  {
+				queues[Math.floor(nums[i] / 10)].enqueue(nums[i]);
+			}
+		}
+	},
+
+	// 收集数字的函数
+	collect: function(queues, nums, n) {
+		var i = 0;
+		for (var j = 0; j < n; j++) {
+			while(!queues[j].empty()) {
+				nums[i++] = queues[j].dequeue();
+			}
+		}
+	},
+
+	// 打印数组元素
+	displayArray: function(arr) {
+		for (var i = 0, len = arr.length; i < len; i++) {
+			console.log(arr[i]);
+		}
+		// console.log(arr.join());
+	}
+};
+
+// 初始化数组nums 由 0-99 数字组成，并获取其长度 n
+var nums = [50, 12, 95, 7, 90, 3, 74, 81, 91, 72];
+console.log(nums);
+var n = nums.length;
+// 初始化数组queues，存储 n 个队列
+var queues = [];
+for (var i = 0; i < n; i++) {
+	queues[i] = new Queue();
+}
+
+console.log(queues);
+// 按照各位排序 nums
+var q = new Queue();
+q.distribute(nums, queues, n, 1);
+q.collect(queues, nums, n);
+q.displayArray(nums);
+
+q.distribute(nums, queues, n, 10);
+q.collect(queues, nums, n);
+q.displayArray(nums);
+
+
+</script>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>对栈的操作</title>
+</head>
+<body>
+	
+</body>
+<script>
+// 构造 Stack 函数
+function Stack() {
+	this.dataStore = [];
+	this.top = 0;
+}
+
+// 原型扩展
+Stack.prototype = {
+
+	// 入栈
+	push: function(element) {
+		this.dataStore[this.top++] = element;
+	},
+
+	// 访问栈顶元素，栈顶元素永久的被删除了
+	pop: function() {
+		return this.dataStore[--this.top];
+	},
+
+	// 返回数组中的 top - 1 个位置的元素，即栈顶元素
+	peek: function() {
+		return this.dataStore[this.top - 1];
+	},
+
+	// 栈内存储了多少个元素
+	length: function() {
+		return this.top;
+	},
+
+	// 清空栈
+	clear: function() {
+		this.top = 0;
+	}
+}
+
+var stack = new Stack();
+stack.push("a");
+stack.push("b");
+stack.push("c");
+stack.push("d");
+console.log(stack.length());
+console.log(stack.peek());
+console.log(stack.pop());
+console.log(stack.peek());
+console.log(stack.dataStore);
+
+function fact(n) {
+	var s = new Stack();
+	while(n > 1) {
+		s.push(n--);
+	}
+	var product = 1;
+	while(s.length() > 0) {
+		product *= s.pop();
+	}
+	return product;
+}
+console.log(fact(5));
+
+</script>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>双向链表</title>
+</head>
+<body>
+	
+</body>
+<script>
+// 定义一个 Node 类
+function Node(element) {
+	// Node 节点的 element 属性 存储节点上的数据
+	this.element = element;
+	// Node 节点的 previous 属性 存储指向 当前节点的上一个节点的 链接(指针)
+	this.previous = null;
+	// Node 节点的 next 属性 存储指向 当前节点的下一个节点的 链接(指针)
+	this.next = null;
+}
+
+// 定义操作双向链表的方法 LinkedList
+function LinkedList() {
+	// head 属性 存储一个 Node实例化的对象
+	this.head = new Node("head");
+}
+
+// 原型扩展 LinkedList 方法
+LinkedList.prototype = {
+	// 查找 item 元素对应的节点
+	find: function(item) {
+		var curNode = this.head;
+		while((curNode.next != null) && (curNode.element != item)) {
+			curNode = curNode.next;
+		}
+		return curNode;
+	},
+
+	// 在目标节点后插入新的节点
+	insert: function(newElement, item) {
+		// 创建一个新的节点 newNode
+		var newNode = new Node(newElement);
+		// 查找 item 数据对应的节点
+		var current = this.find(item);
+		// 新节点 newNode 的 previous 属性 存储指向当前节点的链接(指针)
+		newNode.previous = current;
+		// 新节点 newNode 的 next 属性 存储指向当前节点的下一个节点的链接(指针)
+		newNode.next = current.next;
+		// 当前节点 current 的 next 属性 存储指向新节点的链接(指针)
+		current.next = newNode;
+	},
+
+	// 显示链接中的元素
+	display: function() {
+		var curNode = this.head;
+		while(curNode.next != null) {
+			console.log(curNode.next.element);
+			curNode = curNode.next;
+		}
+	},
+
+	// 删除链表中的元素
+	doubleRemove: function(item) {
+		var curNode = this.find(item);
+		if(curNode.next == null) {
+			curNode.previous.next = null;
+		}else {
+			curNode.previous.next = curNode.next;
+			curNode.next.previous = curNode.previous;
+		}
+		// 清除节点保存的指针
+		curNode.previous = null;
+		curNode.next = null;
+	},
+
+	// 增加反续操作
+	// 1、找到最后一个节点
+	findLast: function() {
+		var curNode = this.head;
+		while(curNode.next != null) {
+			curNode = curNode.next;
+		}
+		return curNode;
+	},
+
+	// 2、反续打印链表中的元素
+	displayReverse: function() {
+		var curNode = this.findLast();
+		while(curNode.previous != null) {
+			console.log(curNode.element);
+			curNode = curNode.previous;
+		}
+	}
+}
+
+// 测试代码
+var test = new LinkedList();
+console.log(test);
+test.insert("a", "head");
+test.insert("b", "a");
+test.insert("c", "b");
+test.insert("d", "c");
+test.insert("e", "d");
+test.display();
+console.log("反向输出")
+test.displayReverse();
+console.log("分隔符")
+test.doubleRemove("c");
+test.display();
+
+</script>
+</html>

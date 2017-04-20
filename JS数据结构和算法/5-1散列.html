@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>散列</title>
+</head>
+<body>
+	
+</body>
+<script>
+// 哈希表也叫散列表，是根据关键码值(key, value)而进行访问的数据结构
+// 它是通过键码值映射到表中的一个位置来访问记录的
+// 散列表后的数据可以快速的插入和使用
+// 散列使用的数据结构叫做散列表
+// 散列表的优点：在散列表上插入、删除和取用数据都非常快
+// 散列表的缺点：查找数据效率低下，如查找最大（小）值
+
+
+/*// 实现一个 HashTable 类，定义一个属性--散列表的长度
+function HashTable() {
+	this.table = new Array(137);
+}
+
+// 实现散列函数
+function simpleHash(data) {
+	var total = 0;
+	for(var i = 0, len = data.length; i < len; i++) {
+		total += data.charCodeAt(i);
+	}
+	console.log("Hash Value: " + data + " -> " + total);
+	return total % this.table.length;
+}
+
+// 将数据存入散列表
+function put(data) {
+	var pos = this.simpleHash(data);
+	this.table[pos] = data;
+}
+
+// 显示散列表中的数据
+function showDistro() {
+	var n = 0;
+	for(var i = 0, len = this.table.length; i < len; i++) {
+		if(this.table[i] != undefined) {
+			console.log(i + ":" + this.table[i]);
+		}
+	}
+}
+*/
+
+// 构建一个 哈希类 HashTable
+function HashTable() {
+	this.table = new Array(137);
+}
+
+// 原型扩展方法
+HashTable.prototype = {
+	simpleHash: function(data) {
+		var total = 0;
+		for(var i = 0, len = data.length; i < len; i++) {
+			total += data.charCodeAt(i);
+		}
+		console.log("Hash Value: " + data + " -> " + total);
+		return total % this.table.length;
+	},
+
+	put: function(data) {
+		var pos = this.simpleHash(data);
+		this.table[pos] = data;
+	},
+
+	showDistro: function() {
+		for(var i = 0, len = this.table.length; i < len; i++) {
+			if(this.table[i] != undefined) {
+				console.log(i + ":" + this.table[i]);
+			}
+		}
+	}
+}
+
+var someNames = ["David", "Jennifer", "Donnie", "Raymond", "Cynthia","Mike", "Clayton", "Danny", "Jonathan"];
+var hTable = new HashTable();
+
+for (var i = 0, len = someNames.length; i < len; i++) {
+	hTable.put(someNames[i]);
+}
+
+hTable.showDistro();
+</script>
+</html>

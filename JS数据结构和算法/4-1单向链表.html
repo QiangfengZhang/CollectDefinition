@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>单项链表</title>
+</head>
+<body>
+	
+</body>
+<script>
+/*
+// 创建节点 Node 类
+function Node(element) {
+	// element 属性用来保存数据
+	this.element = element;
+
+	// next 属性用来保存指向下一个节点的链接(指针)
+	this.next = null;
+}
+
+// 设计一个对链表进行操作的方法
+function LinkTable() {
+	this.head = new Node("head");
+}
+
+// 先找到节点位置
+function find(item) {
+	var curNode = this.head;
+	while(curNode.element != item) {
+		curNode = curNode.next;
+	}
+	return curNode;
+}
+
+// 在节点后面插入新的节点
+function insert(newElement, item) {
+	var newNode = new Node(newElement);
+	var current = this.find(item);
+	newNode.next = current.next;
+	newNode.previous = current;
+	current.next = newNode;
+}
+
+// 删除一个节点
+// 1、找到待删除节点的前面的节点
+function findPrevious(item) {
+	var curNode = this.head;
+	while(!(curNode.next.element == item) && (curNode.next != null)) {
+		curNode = curNode.next;
+	}
+	return curNode;
+}
+
+// 2、删除节点
+function singleRemove(item) {
+	var prevNode = this.findPrevious(item);
+	if (!(previous.next == null)) {
+		prevNode.next = prevNode.next.next;
+	}
+}
+
+// 定义一个显示链表中的元素
+function display() {
+	var curNode = this.head;
+	while(!(curNode.next == null)) {
+		console.log(curNode.next.element);
+		curNode = curNode.next;
+	}
+}
+*/
+
+// 完整的单项链表创建
+// 
+// 1、创建 Node 节点类
+function Node(element) {
+	// element 属性存储 节点上的元素
+	this.element = element;
+
+	// next 属性存储 指向下一个节点的链接(指针)
+	this.next = null;
+}
+
+// 2、设计一个对链表操作的方法
+function LinkedList() {
+	// head 属性 存储一个 保存该链表的头结点的 Node对象
+	this.head = new Node("head");
+}
+
+// 3、原型扩展方法
+LinkedList.prototype = {
+	// 查找元素节点位置
+	find: function(item) {
+		// 定义一个变量 curNode 存储链表的头节点
+		var curNode = this.head;
+		while((curNode.next != null) && (curNode.element != item)) {
+			curNode = curNode.next;
+		}
+		return curNode;
+	},
+
+	// 在已知节点后面插入新的节点
+	insert: function(newElement, item) {
+		// 创建一个新的节点 newNode
+		var newNode = new Node(newElement);
+
+		// 找到 item 节点对应的位置
+		var current = this.find(item);
+
+		// 新的节点指向 item节点指向的元素
+		newNode.next = current.next;
+
+		// item 节点对应指向 新的节点
+		current.next = newNode;
+	},
+
+	// 显示链表中的元素
+	display: function() {
+		// 定义一个变量 curNode 存储链表的头节点
+		var curNode = this.head;
+
+		while(!(curNode.next == null)) {
+			console.log(curNode.next.element);
+			curNode = curNode.next;
+		}
+
+	},
+
+	// 删除节点
+	// 1、找到待删除节点的上一个节点
+	findPrevious: function(item) {
+		var curNode = this.head;
+		while((curNode.next != null) && (curNode.next.element != item)) {
+			curNode = curNode.next;
+		}
+		return curNode;
+	},
+
+	// 2、删除
+	singleRemove: function(item) {
+		var preNode = this.findPrevious(item);
+		if (!(preNode.next == null)) {
+			preNode.next = preNode.next.next;
+		}
+	}
+}
+
+// 测试上述代码
+var test = new LinkedList();
+console.log(Node);
+console.log(test);
+console.log(test.find("head"));
+test.insert("a", "head");
+test.insert("b", "a");
+test.insert("c", "b");
+test.insert("d", "c");
+test.display();
+console.log("分隔线");
+test.singleRemove("c");
+test.display();
+console.log(test.find("d"));
+</script>
+</html>
