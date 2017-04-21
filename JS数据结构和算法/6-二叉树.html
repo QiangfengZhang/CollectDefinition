@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>二叉树</title>
+</head>
+<body>
+	
+</body>
+<script>
+// 二叉树由节点组成 定义一个 Node 对象
+
+/**
+ * 创建一个 Node 类
+ * @param data  数据
+ * @param left  左节点
+ * @param right 右节点
+ * @param show  用来显示保存在节点中的数据
+ */
+function Node(data, left, right) {
+	this.data = data;
+	this.left = left;
+	this.right = right;
+	this.show = show;
+}
+
+function show() {
+	return this.data;
+}
+
+// 构建 二叉树 BST 类
+function BST() {
+	this.root = null;
+	this.insert = insert;
+	this.getMin = getMin;
+	this.getMax = getMax;
+	this.find = find;
+	this.remove = remove;
+}
+
+function insert(data) {
+	var n = new Node(data, null, null);
+	if(this.root == null) {
+		this.root = n;
+	}else {
+		var current = this.root;
+		var parent;
+		while(current) {
+			parent = current;
+			if(data < current.data) {
+				current = current.left;
+				if(current == null) {
+					parent.left = n;
+					break;
+				}
+			}else {
+				current = current.right;
+				if(current == null) {
+					parent.right = n;
+					break;
+				}
+			}
+		}
+	}
+}
+
+// 采用递归遍历二叉树的方法有三种：中序，先序和后序
+
+// 中序遍历，以升序访问树中的所有节点
+// 先访问左子树，再访问根节点，最后访问右子树
+function inOrder(node) {
+	if(!(node == null)) {
+		inOrder(node.left);
+		console.log("中序遍历 " + node.show());
+		inOrder(node.right);
+	}
+}
+
+// 先序遍历先访问根节点，然后以同样的方式访问左子树和右子树
+function preOrder(node) {
+	if(!(node == null)) {
+		console.log("先序遍历 " + node.show());
+		preOrder(node.left);
+		preOrder(node.right);
+	}
+}
+
+// 后序遍历先访问叶子节点，从左子树到右子树，再到根节点
+function postOrder(node) {
+	if(!(node == null)) {
+		postOrder(node.left);
+		postOrder(node.right);
+		console.log("后序遍历 " + node.show());
+	}
+}
+
+// 查找最小值 遍历左树
+function getMin() {
+	var current = this.root;
+	while(!(current.left == null)) {
+		current = current.left;
+	}
+	return current.data;
+}
+
+// 查找最大值 遍历右树
+function getMax() {
+	var current = this.root;
+	while(!(current.right == null)) {
+		current = current.right;
+	}
+	return current.data;
+}
+
+// 二叉树中查找给定值
+function find(data) {
+	var current = this.root;
+	while(current != null) {
+		if(current.data == data) {
+			return current;
+		}else if(data < current.data) {
+			current = current.left;
+		}else {
+			current = current.right;
+		}
+	}
+	return null;
+}
+
+// 若待删除的节点包含两个子节点，两种做法
+// 1：查找待删除节点左子树上的最大值
+// 2：查找带删除节点右子树上的最小值
+function remove(data) {
+	root = removeNode(this.root, data);
+}
+
+function getSmallest(node) {
+	if(node.left == null) {
+		return node;
+	}else {
+		return getSmallest(node.left);
+	}
+}
+
+function removeNode(node, data) {
+	if(node == null) {
+		return null;
+	}
+	if(data == node.data) {
+		// 没有子节点
+		if(node.left == null && node.right == null) {
+			return null;
+		}
+		// 没有左子节点
+		if(node.left == null) {
+			return node.right;
+		}
+		// 没有右子节点
+		if(node.right == null) {
+			return node.left;
+		}
+		// 有两个子节点的节点
+		var tempNode = getSmallest(node.right);
+		node.data = tempNode.data;
+		node.right = removeNode(node.right, tempNode.data);
+		return node;
+	}else if(data < node.data) {
+		node.left = removeNode(node.left, data);
+		return node;
+	}else {
+		node.right = removeNode(node.right, data);
+		return node;
+	}
+}
+
+// 测试代码如下
+var nums = new BST();
+nums.insert(23);
+nums.insert(45);
+nums.insert(16);
+nums.insert(37);
+nums.insert(3);
+nums.insert(99);
+nums.insert(22);
+
+inOrder(nums.root);
+console.log("--------")
+preOrder(nums.root);
+console.log("--------")
+postOrder(nums.root);
+console.log("--------")
+var min = nums.getMin();
+console.log(min);
+console.log("--------");
+var max = nums.getMax();
+console.log(max);
+console.log("--------");
+var a = nums.find(45);
+console.log(a.data);
+console.log("--------");
+nums.remove(3);
+console.log(nums);
+
+</script>
+</html>

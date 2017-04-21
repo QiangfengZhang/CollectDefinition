@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>散列--采用霍纳算法（每次求和时要乘以一个质数）优化计算散列值的更好方法</title>
+</head>
+<body>
+	
+</body>
+<script>
+
+// 构建一个 哈希类 HashTable
+function HashTable() {
+	this.table = new Array(137);
+}
+
+// 原型扩展方法
+// 散列整型的键
+HashTable.prototype = {
+
+	simpleHash:function(data) {
+		var total = 0;
+		for(var i = 0; i < data.length; i++) {
+			total += data.charCodeAt(i);
+		}
+		console.log("Hash Value: " + data + " -> " + total);
+		return total % this.table.length;
+	},
+
+	betterHash: function(string) {
+		var H = 31;// ASCLL码值求和前，total乘以一个质数
+		var total = 0;
+		for(var i = 0, len = string.length; i < len; i++) {
+			total += H * total + string.charCodeAt(i);
+		}
+		total = total % this.table.length;
+		console.log("Hash Value: " + string + " -> " + total);
+		if(total < 0) {
+			total += this.table.length - 1;
+		}
+		return parseInt(total);
+	},
+
+	put: function(key,data) {
+		var pos = this.betterHash(key);
+		this.table[pos] = data;
+	},
+
+	get: function(key) {
+		return this.table[this.betterHash(key)];
+	},
+
+	showDistro: function() {
+		for(var i = 0, len = this.table.length; i < len; i++) {
+			if(this.table[i] != undefined) {
+				console.log(i + ":" + this.table[i]);
+			}
+		}
+	}
+}
+
+// 设计一个随机函数 返回 min - max 之间的随机整数值
+function getRandomInt(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getStuData(arr) {
+	for (var i = 0, len = arr.length; i < len; i++) {
+		var num = "";
+		for (var j = 0; j < 9; j++) {
+			// 学生身份的ID
+			num += Math.floor(Math.random() * 10);
+		}
+		console.log(num);
+		num += getRandomInt(60,100);
+		console.log(num)
+		console.log("----------");
+		arr[i] = num;
+	}
+} 
+
+// 测试上述代码
+var students = new Array(10);
+getStuData(students);
+console.log("----------");
+
+console.log("Student data: \n");
+for (var i = 0, len = students.length; i < len; i++) {
+	console.log(students[i].substring(0, 8) + " " + students[i].substring(9));
+}
+console.log("----------");
+
+console.log("\n\nData distribution:\n");
+
+var hTable = new HashTable();
+for (var i = 0, len = students.length; i < len; i++) {
+	hTable.put(students[i], students[i]);
+}
+
+hTable.showDistro();
+</script>
+</html>

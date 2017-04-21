@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>散列--线性探测法</title>
+</head>
+<body>
+	
+</body>
+<script>
+
+// 如果数组的大小是待存储数据个数的1.5倍，使用开链法
+// 如果数组的大小是待存储数据个数的2倍及以上，使用线性探测法
+
+// 线性探测法属于一般的散列技术：开放寻址散列。当发生碰撞时，线性探测法检查
+// 散列中的当前位置是否为空，如果为空，将数据存入该位置，如果不为空，则继续
+// 检查下一个位置，直到找到一个空的位置为止。
+
+// 构建一个 哈希类 HashTable
+function HashTable() {
+	this.table = new Array(137);
+	this.values = [];
+}
+
+// 原型扩展方法
+HashTable.prototype = {
+
+	simpleHash:function(data) {
+		var total = 0;
+		for(var i = 0; i < data.length; i++) {
+			total += data.charCodeAt(i);
+		}
+		console.log("Hash Value: " + data + " -> " + total);
+		return total % this.table.length;
+	},
+
+	betterHash: function(string) {
+		var H = 31;// ASCLL码值求和前，total乘以一个质数
+		var total = 0;
+		for(var i = 0, len = string.length; i < len; i++) {
+			total += H * total + string.charCodeAt(i);
+		}
+		total = total % this.table.length;
+		console.log("Hash Value: " + string + " -> " + total);
+		if(total < 0) {
+			total += this.table.length - 1;
+		}
+		return parseInt(total);
+	},
+
+	put: function(key,data) {
+		var pos = this.simpleHash(key);
+		if(this.table[pos] == undefined) {
+			this.table[pos] = key;
+			this.values[pos] = data;
+		}else {
+			while(this.table[pos] != undefined) {
+				pos++;
+			}
+			this.table[pos] = key;
+			this.values[pos] = data;
+		}
+	},
+
+	get: function(key) {
+		var pos = this.simpleHash(key);
+		if(this.table[pos] == key) {
+			return this.values[pos];
+		}else {
+			for(var i = pos + 1, len = this.table.length; i < len; i++) {
+				if(this.table[i] == key) {
+					return this.values[pos];
+				}
+			}			
+		}
+		return undefined;
+	},
+
+	showDistro: function() {
+		for(var i = 0, len = this.table.length; i < len; i++) {
+			if(this.table[i] != undefined) {
+				console.log(i + ":" + this.values[i]);
+			}
+		}
+	}
+}
+
+var someNames = ["David", "Jennifer", "Donnie", "Raymond", "Cynthia", "Mike", "Clayton", "Danny", "Jonathan"];
+
+var hTable = new HashTable();
+
+for(var i = 0, len = someNames.length; i < len; i++) {
+	hTable.put(someNames[i], someNames[i]);
+}
+
+hTable.showDistro();
+console.log("------------");
+for(var i = 0, len = someNames.length; i < len; i++) {
+	console.log(hTable.get(someNames[i]));
+}
+</script>
+</html>
