@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>for in</title>
+</head>
+<body>
+	
+</body>
+<script>
+// for in 语句可以用来遍历一个对象中的所有属性名。
+// 该枚举过程会列出所有的属性（包括函数和原型中的属性）
+// 过滤不想要的值：1、常用的过滤器是 hasOwmProperty 方法
+// 				   2、使用 typeof 来排除函数
+var name;
+var stooge = {
+	"first-name": "Jerome",
+	"last-name": "Howard",
+	"sayHi": function() {
+		alert("Hi !")
+	}
+};
+for(name in stooge) {
+
+		document.write(name + ": " + stooge[name] + "<br />");
+
+}
+document.write("---------------------" + "<br />");
+for(name in stooge) {
+	if(typeof stooge[name] !== "function") {
+		document.write(name + ": " + stooge[name] + "<br />");
+	}
+}
+
+// 属性名出现的顺序是不一定的，因此要对任何可能出现的顺序有所准备。
+// 要想确保属性以特定的顺序出现，最好的办法就是完全避免使用 for in语句
+// 而是创建一个数组，在其中以正确的属性包含属性名：
+var properties = [
+	"last-name",
+	"first-name",
+	"sayHi",
+]
+document.write("---------------------" + "<br />");
+for(var i = 0; i < properties.length; i++) {
+	document.write(properties[i] + ": " + stooge[properties[i]] + "<br />");
+}
+</script>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>对象通过引用来传递。他们永远不会被拷贝</title>
+</head>
+<body>
+	
+</body>
+<script>
+// 对象字面量的创建
+var stooge = {
+	"first-name": "Jerome",
+	"last-name": "Howard"
+};
+
+// 对象是可以嵌套的
+var flight = {
+	airline: "Oceanic",
+	number: 815,
+	departure: {
+		IATA: "SYD",
+		time: "2017-04-27 03:30",
+		city: "Sydney"
+	},
+	arrival: {
+		IATA: "LAX",
+		time: "2017-04-27 10:20",
+		city: "Los Angeles"
+	}
+};
+
+var x = stooge;
+x.nickname = "Curly";
+var nick = stooge.nickname;// Curly 因为 x 和 stooge 指向同一个对象的引用 
+
+var a = {}, b = {}, c = {};// a、b、c 每个都引用一个不同的空对象
+
+a = b = c = {}; // a、b、c 每个都引用同一个空对象
+</script>
+</html>

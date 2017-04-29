@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>函数可以用对象记住先前操作的结果，从而避免无所谓的运算，这种优化被称为 记忆 </title>
+</head>
+<body>
+	
+</body>
+<script>
+// 斐波拉切数的实现
+// 递归调用
+var fibonacci = function(n) {
+	return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+};
+
+// 调用 11 次 fibonacci 函数 而它自身调用了442次去计算可能已被计算过的值。
+for(var i = 0; i < 11; i++) {
+	document.write("// " + i + ": " + fibonacci(i) + "<br />");
+}
+document.write("----------------------------" + "<br />");
+
+// 记忆方法 优化 斐波拉切函数
+var fibonacci = function() {
+	var memo = [0, 1];
+	var fib = function(n) {
+		var result = memo[n];
+		if(typeof result !== "number") {
+			result = fib(n - 1) + fib(n - 2);
+			// memo 数组存储我们要保存的结果
+			memo[n] = result;
+		}
+		return result;
+	};
+	return fib;
+}();
+
+// 调用 fibonacci 函数11次，它自身调用了18次
+for(var i = 0; i < 11; i++) {
+	document.write("// " + i + ": " + fibonacci(i) + "<br />");
+}
+document.write("----------------------------" + "<br />");
+
+/**
+ * [memoizer 记忆函数一般化]
+ * @param  {[type]} memo        [数组 存储结果]
+ * @param  {[type]} fundamental [函数]
+ * @return {[type]}             [description]
+ */
+var memoizer = function(memo, fundamental) {
+	var shell = function(n) {
+		var result = memo[n];
+		if(typeof result !== 'number') {
+			result = fundamental(shell, n);
+			memo[n] = result;
+		}
+		return result;
+	};
+	return shell;
+};
+
+// 利用 记忆一般化函数 实现 fibonacci 函数
+var fibonacci = memoizer([0, 1], function(shell, n) {
+	return shell(n - 1) + shell(n - 2);
+})
+
+for(var i = 0; i < 11; i++) {
+	document.write("// " + i + ": " + fibonacci(i) + "<br />");
+}
+document.write("----------------------------" + "<br />");
+
+// 利用 记忆一般化函数 实现 阶乘 函数
+var factorial = memoizer([1, 1], function(shell, n) {
+	return n * shell(n - 1);
+});
+
+for(var i = 0; i < 11; i++) {
+	document.write("// " + i + ": " + factorial(i) + "<br />");
+}
+document.write("----------------------------" + "<br />");
+</script>
+</html>

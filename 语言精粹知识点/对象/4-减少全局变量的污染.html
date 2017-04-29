@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>减少全局变量污染</title>
+</head>
+<body>
+	
+</body>
+<script>
+// 最小化使用全局变量的一个方法：只创建唯一一个全局变量
+var MYAPP = {};
+// 该变量此时变成了应用的容器
+// 把多个全局变量整理在一个名称空间下，将显著降低与其他应用程序、组件或类库
+// 之间产生糟糕的相互影响的可能性，程序也变得更容易阅读
+// 
+// 此外，使用闭包来进行信息隐藏的方式是另一个有效减少全局污染的方法
+// 
+MYAPP.stooge = {
+	"first-name": "Jeo",
+	"last-name": "Howard"
+}
+
+MYAPP.flight = {
+	airline: "Oceanic",
+	number: 815,
+	departure: {
+		IATA: "SYD",
+		time: "2017-04-27 03:30",
+		city: "Sydney"
+	},
+	arrival: {
+		IATA: "LAX",
+		time: "2017-04-27 10:20",
+		city: "Los Angeles"
+	}
+};
+</script>
+</html>

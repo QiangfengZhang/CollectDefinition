@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>伪类</title>
+</head>
+<body>
+	
+</body>
+<script>
+// JS 是一门基于原型的语言，这意味着 对象 直接从 其它对象 继承。
+// 
+// 当一个函数对象被创建时，Function 构造器产生的函数对象会运行类似这样的一些代码
+// this.prototype = { constructor: this};
+// 新函数对象被赋予一个 prototype 属性，其值包含一个 constructor 属性且属性值为该新函数对象
+
+// 定义一个构造器并扩充它的原型
+var Mammal = function(name) {
+	this.name = name;
+};
+
+Mammal.prototype.get_name = function() {
+	return this.name;
+}
+
+Mammal.prototype.says = function() {
+	return this.saying || "";
+}
+
+// 构造一个实例
+var myMammal = new Mammal("Herb the Mammal");
+console.log(myMammal);
+var name = myMammal.get_name();
+console.log(name);
+
+// 构造另一个伪类来 继承 Mammal，通过定义它的 constructor 函数并替换它的 prototype 为一个 Mammal 的实例 来实现的
+
+var Cat = function(name) {
+	this.name = name;
+	this.saying = "meow";
+};
+console.log(Cat.prototype);
+// 替换 Cat.prototype 为一个新的 Mammal 实例
+Cat.prototype = new Mammal();
+console.log(Cat.prototype);
+
+// 扩充新原型对象，增加 purr 和 get_name 方法
+Cat.prototype.purr = function(n) {
+	var i, s = "";
+	for(i = 0; i < n; i++) {
+		if(s) {
+			s += "-";
+		}
+		s +="r";
+	}
+	return s;
+};
+
+Cat.prototype.get_name = function() {
+	return this.says() + " " + this.name + "" + this.says();
+};
+
+var myCat = new Cat("Henrietta");
+console.log(myCat);
+var says = myCat.says();
+console.log(says);
+var purr = myCat.purr(5);
+console.log(purr);
+var name = myCat.get_name();
+console.log(name);
+
+</script>
+</html>
